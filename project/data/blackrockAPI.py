@@ -1,22 +1,14 @@
 import requests
+import json
 """
 For the examples we are using 'requests' which is a popular minimalistic python library for making HTTP requests.
 Please use 'pip install requests' to add it to your python libraries.
 """
 
-<<<<<<< HEAD
-portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/performance", params= {'identifiers':"AAPL"})
-# print(portfolioAnalysisRequest.text # get in text string format
-performance = portfolioAnalysisRequest.json()[u'resultMap'][u'RETURNS'][0][u'performanceChart']
-
-f = open('stock_data', 'w')
-f.write(str(performance))
-count = 0
-for _ in performance:
-    count += 1
-print count
-=======
-portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : 'BLK~25|AAPL~25|IXN~25|MALOX~25'})
-#print(portfolioAnalysisRequest.text) # get in text string format
-print (portfolioAnalysisRequest.json()) # get as json object
->>>>>>> 054ea0b01a13a874938831e52f2be6cbcf5de89f
+portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : 'IBM~20|BLK~20|AAPL~20|IXN~20|MALOX~20'})
+jsonObject = portfolioAnalysisRequest.json()
+portfolios = jsonObject['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['holdings']
+for holding in portfolios:
+    print holding['returnOnAssets']
+#print json.dumps(portfolios, indent=4) # get in text string format
+#portfolioAnalysisRequest.json # get as json object
