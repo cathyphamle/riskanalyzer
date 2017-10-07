@@ -3,6 +3,7 @@ import json
 import numpy as np
 import Queue
 import time
+import csv
 
 def dump(js):
     print json.dumps(js, indent=2)
@@ -11,6 +12,7 @@ def setParams(tickers):
     positions = ''
     distNum = 100 / len(tickers)
     currTotal = 0
+
     for i in range(0, len(tickers)):
         positions = positions + tickers[i] + '~'
         if i != len(tickers) - 1:
@@ -27,9 +29,11 @@ def getRecommendations(score):
     bestSoFar = (float('inf'), '')
     tickers = []
     i = 0
-    with open('tickers.txt', 'r') as fin:
-        for line in fin:
-            tickers.append(line.strip())
+    with open('companylist.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            tickers.append(row['Symbol'])
+            sector = row['Sector']
     start = time.clock()
     while len(tickers) > 0:
         params = tickers[0:10]
@@ -69,6 +73,7 @@ def main(tickers):
     for result in performance:
         info = result['latestPerf']
         ticker = result['ticker']
+        dump(result)
         if 'oneYearSharpeRatio' in info and 'oneYearRisk' in info:
             sharpescore = info['oneYearSharpeRatio']
             myList.append(sharpescore)
