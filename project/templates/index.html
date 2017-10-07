@@ -8,114 +8,59 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>New Age - Start Bootstrap Theme</title>
+    <title>Scrolling Nav - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom fonts for this template -->
-    <link rel="stylesheet" href="../static/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/vendor/simple-line-icons/css/simple-line-icons.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-
-    <!-- Plugin CSS -->
-    <link rel="stylesheet" href="../static/device-mockups/device-mockups.min.css">
-
     <!-- Custom styles for this template -->
-    <link href="../static/css/new-age.min.css" rel="stylesheet">
+    <link href="../static/css/scrolling-nav.css" rel="stylesheet">
 
-    <!--- Link to react script -->
-    <link href="../static/js/react/react.js" rel="stylesheet">
+    <!--- Link to chartist -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
+    <script type="text/javascript" src="../static/js/chart.js"></script>
 
 </head>
 
 <body id="page-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">BlackRock Portfolio Risk Assessment</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">BlackRock Portfolio Risk Analysis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+                <!-- <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#download">Download</a>
+                        <a class="nav-link js-scroll-trigger" href="#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#features">Features</a>
+                        <a class="nav-link js-scroll-trigger" href="#services">Services</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </nav>
-
-    <header class="masthead">
-        <div class="container h-100">
-            <div class="row h-100">
-                <div class="col-lg-7 my-auto">
-                    <div class="header-content mx-auto">
-                        <h1 class="mb-5">
-                            <div id="root"></div>
-                        </h1>
-                        <a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>
-                    </div>
-                </div>
-                <div class="col-lg-5 my-auto">
-
-                </div>
-            </div>
+    <div class="container">
+        <div id="chart-container" class="col-9">
+            <div class="ct-chart ct-golden-section" id="chart1"></div>
+            <div class="ct-chart ct-golden-section" id="chart2"></div>
         </div>
-    </header>
+    </div>
 
-
-    <section class="contact bg-primary" id="contact">
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
         <div class="container">
-            <h2>We
-                <i class="fa fa-heart"></i> new friends!</h2>
-            <ul class="list-inline list-social">
-                <li class="list-inline-item social-twitter">
-                    <a href="#">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </li>
-                <li class="list-inline-item social-facebook">
-                    <a href="#">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                </li>
-                <li class="list-inline-item social-google-plus">
-                    <a href="#">
-                        <i class="fa fa-google-plus"></i>
-                    </a>
-                </li>
-            </ul>
+            <p class="m-0 text-center text-white">Copyright &copy; CalHacks 2017 Team Cuck</p>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2017 Start Bootstrap. All Rights Reserved.</p>
-            <ul class="list-inline">
-                <li class="list-inline-item">
-                    <a href="#">Privacy</a>
-                </li>
-                <li class="list-inline-item">
-                    <a href="#">Terms</a>
-                </li>
-                <li class="list-inline-item">
-                    <a href="#">FAQ</a>
-                </li>
-            </ul>
-        </div>
+        <!-- /.container -->
     </footer>
 
     <!-- Bootstrap core JavaScript -->
@@ -126,8 +71,8 @@
     <!-- Plugin JavaScript -->
     <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for this template -->
-    <script src="../static/js/new-age.min.js"></script>
+    <!-- Custom JavaScript for this theme -->
+    <script src="../static/js/scrolling-nav.js"></script>
 
 </body>
 
