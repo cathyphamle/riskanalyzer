@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/ryanlawler/hack#readme",
   "dependencies": {
-    "react": "^16.0.0"
-  }
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "devDependencies": {}
 }
