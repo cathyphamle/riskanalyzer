@@ -1,4 +1,3 @@
-
 import requests
 import json
 import numpy as np
@@ -10,10 +9,14 @@ def dump(js):
 def setParams(tickers):
     positions = ''
     distNum = 100 / len(tickers)
+    currTotal = 0
     for i in range(0, len(tickers)):
-        positions = positions + tickers[i] + '~' + str(distNum)
+        positions = positions + tickers[i] + '~'
         if i != len(tickers) - 1:
-            positions += '|'
+            positions += str(distNum) + '|'
+            currTotal += distNum
+        else:
+            positions += str(100 - currTotal)
     return positions
 
 def main(tickers):
