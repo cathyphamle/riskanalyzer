@@ -23,11 +23,14 @@ def main(tickers):
     performanceJson = performanceDataRequest.json()
     holdings = portfolioJson['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['holdings']
     tickers = []
+    sectors = []
     myList = []
     q = Queue.PriorityQueue()
     for holding in holdings:
         ticker = str(holding['ticker'])
         tickers.append(ticker)
+        sector = holding['breakdowns']['stockSector'][0]['name']
+        sectors.append(sector)
         score = holding['riskData']['totalRisk']
         q.put(ticker, score)
         myList.append(score)
@@ -39,6 +42,7 @@ def main(tickers):
     myList = filter(drop_outliers, myList)
     print('Your risk score: ', np.mean(myList))
     print('Your three most volatile stocks: ')
+    print(sectors)
     for _ in range(0, 3):
         if not q.empty():
             print(q.get())
