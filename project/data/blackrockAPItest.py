@@ -29,22 +29,26 @@ def main(tickers):
     sectors = []
     myList = []
     q = Queue.PriorityQueue()
+    holdings = portfolioJson['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['holdings']
+    performance = performanceJson['resultMap']['RETURNS']
+    tickers = []
+    myList = []
+    q = Queue.PriorityQueue()
     for holding in holdings:
         ticker = str(holding['ticker'])
         tickers.append(ticker)
-        sector = holding['breakdowns']['stockSector'][0]['name']
-        sectors.append(sector)
         score = holding['riskData']['totalRisk']
         q.put(ticker, score)
         myList.append(score)
     mean_duration = np.mean(myList)
     std_dev_one_test = np.std(myList)
+
     def drop_outliers(x):
         if abs(x - mean_duration) <= 2 * std_dev_one_test:
             return x
+
     myList = filter(drop_outliers, myList)
-    print('Your risk score: ', np.mean(myList))
-    print('Your three most volatile stocks: ')
+    riskScore = np.mean(myList)
     print(sectors)
     for _ in range(0, 3):
         if not q.empty():

@@ -1,9 +1,8 @@
-
 import requests
 import json
-<<<<<<< HEAD
 import numpy as np
 import Queue
+import time
 
 def dump(js):
     print json.dumps(js, indent=2)
@@ -25,53 +24,66 @@ def getRiskScore(ticker):
     return
 
 def getRecommendations(score):
+    bestSoFar = (float('inf'), '')
+    tickers = []
+    i = 0
     with open('tickers.txt', 'r') as fin:
         for line in fin:
-            param = line.strip() + '~100'
-            portfolioJson = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis",
-                                                    params={'positions': param, 'calculateRisk': 'true'}).json()
-            holding = portfolioJson['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['holdings'][0]
-            if 'riskData' in holding:
-                riskData = holding['riskData']
-                if 'riskTotal' in riskData:
-                    print riskData['riskTotal']
+            tickers.append(line.strip())
+    start = time.clock()
+    while len(tickers) > 0:
+        params = tickers[0:10]
+        tickers = tickers[10:]
+        performanceJson = requests.get("https://www.blackrock.com/tools/hackathon/performance",
+                                              params={'identifiers': params, 'includePositionReturns': 'true'}).json()
+        performance = performanceJson['resultMap']
+        if 'RETURNS' in performance:
+            returns = performance['RETURNS']
+            for info in returns:
+                current_time = time.clock()
+                elapsed = current_time - start
+                #print("speed: ", round(i / elapsed, 1), " requests/second")
+                i+= 1
+                if 'ticker' in info and 'latestPerf' in info:
+                    perf = info['latestPerf']
+                    if 'oneYearSharpeRatio' in perf:
+                        currScore = perf['oneYearSharpeRatio']
+                        closeness = abs(score - currScore)
+                        if closeness < bestSoFar[0]:
+                            bestSoFar = (closeness, info['ticker'])
+    return bestSoFar[1]
 
-            print score
-
-        # Do string processing here
 
 def main(tickers):
-    portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : setParams(tickers), 'calculateRisk': 'true'})
+    #portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : setParams(tickers), 'calculateRisk': 'true'})
     performanceDataRequest = requests.get("https://www.blackrock.com/tools/hackathon/performance", params= {'identifiers':tickers, 'includePositionReturns':'true'})
-    portfolioJson = portfolioAnalysisRequest.json()
+    #portfolioJson = portfolioAnalysisRequest.json()
     performanceJson = performanceDataRequest.json()
-    holdings = portfolioJson['resultMap']['PORTFOLIOS'][0]['portfolios'][0]['holdings']
     performance = performanceJson['resultMap']['RETURNS']
     tickers = []
-    myList = []
     q = Queue.PriorityQueue()
-    for holding in holdings:
-        ticker = str(holding['ticker'])
-        tickers.append(ticker)
-        score = holding['riskData']['totalRisk']
-        q.put(ticker, score)
-        myList.append(score)
-    mean_duration = np.mean(myList)
-    std_dev_one_test = np.std(myList)
     def drop_outliers(x):
         if abs(x - mean_duration) <= 2 * std_dev_one_test:
             return x
+    myList = []
+    for result in performance:
+        info = result['latestPerf']
+        ticker = result['ticker']
+        if 'oneYearSharpeRatio' in info and 'oneYearRisk' in info:
+            sharpescore = info['oneYearSharpeRatio']
+            myList.append(sharpescore)
+            score = info['oneYearRisk']
+            q.put(ticker, score)
+            tickers.append(ticker)
+    mean_duration = np.mean(myList)
+    std_dev_one_test = np.std(myList)
     myList = filter(drop_outliers, myList)
     riskScore = np.mean(myList)
-    print('Your risk score: ', riskScore)
+    print 'Your risk score: ', str(riskScore)
     print('Your three most volatile stocks: ')
-    for _ in range(0, 3):
+    for _ in range(3):
         if not q.empty():
-            print(q.get())
-
-    for result in performance:
-        performanceChart = result['performanceChart']
-
+            print q.get()
     getRecommendations(riskScore)
 
 if __name__ == "__main__":
