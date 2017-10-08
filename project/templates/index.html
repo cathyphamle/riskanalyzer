@@ -8,13 +8,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Scrolling Nav - Start Bootstrap Template</title>
+    <title>Risk Analysis</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="../static/css/scrolling-nav.css" rel="stylesheet">
+
+    <link href="../static/css/button.css" rel="stylesheet"
 
     <!--- Link to chartist -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
@@ -47,13 +49,43 @@
             </div>
         </div>
     </nav>
+
+    <header class="bg-primary text-white">
+          <div class="container text-center">
+            <h1>BlackRock Portfolio Risk Analysis</h1>
+            <p id="lead"></p>
+            <script>
+                document.getElementById("lead").innerHTML = Date();
+            </script>
+          </div>
+    </header>
+
     <div class="container">
-        <div id="chart-container" class="col-9">
-            <div class="ct-golden-section" id="chart1">
-                <script src="../static/js/chart.js"></script>
+        <div class="row">
+            <div class="col-4">
+              <h1 class="my-4">Investment Portfolio</h1>
+              <div class="list-group">
+                <form action="/forward/" method="post">
+                    <button class="buttons buttons1" name="forwardBtn" type="submit" id="buttonText1"></button>
+                    <button class="buttons buttons1" name="forwardBtn" type="submit" id="buttonText2"></button>
+                    <button class="buttons buttons1" name="forwardBtn" type="submit" id="buttonText3"></button>
+                </form>
+                <script>
+                    document.getElementById("buttonText1").innerHTML = Date();
+                    document.getElementById("buttonText2").innerHTML = Date();
+                    document.getElementById("buttonText3").innerHTML = Date();
+                </script>
+
+              </div>
+
             </div>
-            <div class="ct-golden-section" id="chart2">
-                <script src="../static/js/chart.js"></script>
+            <div id="chart-container" class="col" style="padding-top:50px;">
+                <div class="ct-golden-section" id="chart1">
+                    <script src="../static/js/chart.js"></script>
+                </div>
+                <div class="ct-golden-section" id="chart2">
+                    <script src="../static/js/chart.js"></script>
+                </div>
             </div>
         </div>
     </div>
