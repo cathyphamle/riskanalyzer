@@ -2135,8 +2135,6 @@ fieldset[disabled] a.btn {
     /*border-color: #007bff*/
 }
 
-
-
 .btn-secondary {
     color: #fff;
     background-color: #868e96;
@@ -2159,7 +2157,6 @@ fieldset[disabled] a.btn {
     background-color: #868e96;
     border-color: #868e96
 }
-
 
 .btn-success {
     color: #fff;
@@ -4472,7 +4469,6 @@ button.list-group-item-primary.active {
     background-color: #dddfe2
 }
 
-
 a.list-group-item-secondary,
 button.list-group-item-secondary {
     color: #464a4e
@@ -5320,7 +5316,7 @@ button.close {
 }
 
 .bg-primary {
-    background-color: 	#708090!important
+    background-color: #708090!important
 }
 
 a.bg-primary:focus,

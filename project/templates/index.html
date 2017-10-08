@@ -16,9 +16,9 @@
     <!-- Custom styles for this template -->
     <link href="../static/css/scrolling-nav.css" rel="stylesheet">
 
-    <link href="../static/css/button.css" rel="stylesheet"
+    <link href="../static/css/button.css" rel="stylesheet">
 
-    <!--- Link to chartist -->
+    <!-- Link to chartist -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script type="text/javascript" src="../static/js/chart.js"></script>
@@ -52,24 +52,24 @@
     </nav>
 
     <header class="bg-primary text-white">
-          <div class="container text-center">
+        <div class="container text-center">
             <h1>BlackRock Portfolio Risk Analysis</h1>
             <p id="lead"></p>
             <script>
                 document.getElementById("lead").innerHTML = Date();
             </script>
-          </div>
+        </div>
     </header>
 
     <div class="container">
         <div class="row">
             <div class="col-4">
-              <h1 class="my-4">Investment Portfolio</h1>
-              <div class="list-group">
-                <button class="buttons buttons1" id="buttonText1" onclick="showChart(1)"></button>
-                <button class="buttons buttons1" id="buttonText2" onclick="showChart(2)"></button>
-                <button class="buttons buttons1" id="buttonText3" onclick="showChart(3)"></button>
-              </div>
+                <h1 class="my-4">Investment Portfolio</h1>
+                <div class="list-group">
+                    <button class="buttons buttons1" id="buttonText1" onclick="showChart(1)"></button>
+                    <button class="buttons buttons1" id="buttonText2" onclick="showChart(2)"></button>
+                    <button class="buttons buttons1" id="buttonText3" onclick="showChart(3)"></button>
+                </div>
 
             </div>
             <div id="chart-container" class="col" style="padding-top:50px;">
@@ -109,14 +109,15 @@
         document.getElementById("buttonText1").innerHTML = Date();
         document.getElementById("buttonText2").innerHTML = Date();
         document.getElementById("buttonText3").innerHTML = Date();
+
         function showChart(num) {
             for (var i = 1; i <= 3; i += 1) {
                 var e = document.getElementById("chart" + i);
                 if (i == num) {
-                    if(e.style.display == 'none')
+                    if (e.style.display == 'none')
                         e.style.display = 'block';
                 } else {
-                    if(e.style.display == 'block')
+                    if (e.style.display == 'block')
                         e.style.display = 'none';
                 }
             }
