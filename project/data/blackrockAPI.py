@@ -35,18 +35,25 @@ def getRecommendations(holdingTicker, score):
     with open('tickerToSharpe.csv', mode='r') as infile:
         reader = csv.reader(infile)
         sharpeDict = dict((rows[0],rows[1]) for rows in reader)
+    holdingRiskValue = float(riskDict[holdingTicker])
+    # print holdingTicker
+    # print holdingRiskValue
+    q = []
     for ticker in tickers:
+        currRiskValue = float(riskDict[ticker])
+        q.append((ticker, abs(holdingRiskValue - currRiskValue)))
     top = []
+    best = (holdingTicker, -float('inf'))
 
-    best = (holdingTicker, sharpeDict[holdingTicker])
     for _ in range(20):
-        top.append(q.get())
-    for potentialRecommendation in top:
-        print potentialRecommendation
-        currSharpeScore = sharpeDict[ticker]
-        if currSharpeScore >= best[1]:
-            best = (ticker, currSharpeScore)
-    return best
+        top.append(q[0])
+    # print top
+    # for potentialRecommendation in top:
+    #     print potentialRecommendation
+    #     currSharpeScore = sharpeDict[ticker]
+    #     if currSharpeScore >= best[1]:
+    #         best = (ticker, currSharpeScore)
+    # return best
 
 
 def main(tickers):
