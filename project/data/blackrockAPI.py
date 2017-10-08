@@ -25,48 +25,35 @@ def setParams(tickers):
 def getRiskScore(ticker):
     return
 
-def getRecommendations(score):
-    bestSoFar = (float('inf'), '')
+def getRecommendations(holdingTicker, score):
     tickers = []
     i = 0
-    with open('companylist.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            tickers.append(row['Symbol'])
-            sector = row['Sector']
-    start = time.clock()
-    while len(tickers) > 0:
-        params = tickers[0:10]
-        tickers = tickers[10:]
-        performanceJson = requests.get("https://www.blackrock.com/tools/hackathon/performance", params={'identifiers': params, 'includePositionReturns': 'true'}).json()
-        performance = performanceJson['resultMap']
-        if 'RETURNS' in performance:
-            returns = performance['RETURNS']
-            for info in returns:
-                current_time = time.clock()
-                elapsed = current_time - start
-                #print("speed: ", round(i / elapsed, 1), " requests/second")
-                i += 1
-                if 'ticker' in info and 'latestPerf' in info:
-                    perf = info['latestPerf']
-                    if 'oneYearSharpeRatio' in perf:
-                        currScore = perf['oneYearSharpeRatio']
-                        closeness = abs(score - currScore)
-                        if closeness < bestSoFar[0]:
-                            bestSoFar = (closeness, info['ticker'])
-    return bestSoFar[1]
-
-
-def main(tickers):
     with open('tickerToRisk.csv', mode='r') as infile:
         reader = csv.reader(infile)
         riskDict = dict((rows[0],rows[1]) for rows in reader)
+        tickers = riskDict.keys()
     with open('tickerToSharpe.csv', mode='r') as infile:
         reader = csv.reader(infile)
-        riskDict = dict((rows[0],rows[1]) for rows in reader)
+        sharpeDict = dict((rows[0],rows[1]) for rows in reader)
+    for ticker in tickers:
+    top = []
+
+    best = (holdingTicker, sharpeDict[holdingTicker])
+    for _ in range(20):
+        top.append(q.get())
+    for potentialRecommendation in top:
+        print potentialRecommendation
+        currSharpeScore = sharpeDict[ticker]
+        if currSharpeScore >= best[1]:
+            best = (ticker, currSharpeScore)
+    return best
+
+
+def main(tickers):
     #portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : setParams(tickers), 'calculateRisk': 'true'})
     performanceDataRequest = requests.get("https://www.blackrock.com/tools/hackathon/performance", params= {'identifiers':tickers, 'includePositionReturns':'true'})
     #portfolioJson = portfolioAnalysisRequest.json()
+    performanceJson = performanceDataRequest.json()
     performance = performanceJson['resultMap']['RETURNS']
     tickers = []
     q = Queue.PriorityQueue()
@@ -74,6 +61,7 @@ def main(tickers):
         if abs(x - mean_duration) <= 2 * std_dev_one_test:
             return x
     myList = []
+    recommendations = []
     for result in performance:
         info = result['latestPerf']
         ticker = result['ticker']
@@ -89,11 +77,16 @@ def main(tickers):
     riskScore = np.mean(myList)
     print 'Your risk score: ', str(riskScore)
     print('Your three most volatile stocks: ')
+    toReplace = []
     for _ in range(3):
         if not q.empty():
-            print q.get()
-    getRecommendations(riskScore)
+            i = q.get()
+            print i
+            toReplace.append(i)
+    for ticker in toReplace:
+        recommendations.append((ticker, getRecommendations(ticker, score)))
+    print recommendations
 
 if __name__ == "__main__":
-    params = ['MU', 'NVDA', 'SQM','AAPL', 'GOOG', 'DATA']
+    params = ['MU', 'NVDA', 'SQM','AAPL']
     main(params)
