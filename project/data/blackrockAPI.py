@@ -4,15 +4,9 @@ import numpy as np
 import Queue
 import time
 import csv
-from sqlite3 import dbapi2 as sqlite
 
 def dump(js):
     print json.dumps(js, indent=2)
-
-def create_connection(path):
-	con = sqlite3.connect(path)
-	df = pd.read_sql_query("SELECT * from Blackrock", con)
-	return df
 
 def setParams(tickers):
     positions = ''
@@ -44,7 +38,7 @@ def getRecommendations(score):
     while len(tickers) > 0:
         params = tickers[0:10]
         tickers = tickers[10:]
-        performanceData = requests.get("https://www.blackrock.com/tools/hackathon/performance", params= {'identifiers':tickers, 'includePositionReturns':'true'})
+        performanceJson = requests.get("https://www.blackrock.com/tools/hackathon/performance", params={'identifiers': params, 'includePositionReturns': 'true'}).json()
         performance = performanceJson['resultMap']
         if 'RETURNS' in performance:
             returns = performance['RETURNS']
@@ -52,7 +46,7 @@ def getRecommendations(score):
                 current_time = time.clock()
                 elapsed = current_time - start
                 #print("speed: ", round(i / elapsed, 1), " requests/second")
-                i+= 1
+                i += 1
                 if 'ticker' in info and 'latestPerf' in info:
                     perf = info['latestPerf']
                     if 'oneYearSharpeRatio' in perf:
@@ -64,10 +58,15 @@ def getRecommendations(score):
 
 
 def main(tickers):
+    with open('tickerToRisk.csv', mode='r') as infile:
+        reader = csv.reader(infile)
+        riskDict = dict((rows[0],rows[1]) for rows in reader)
+    with open('tickerToSharpe.csv', mode='r') as infile:
+        reader = csv.reader(infile)
+        riskDict = dict((rows[0],rows[1]) for rows in reader)
     #portfolioAnalysisRequest = requests.get("https://www.blackrock.com/tools/hackathon/portfolio-analysis", params={'positions' : setParams(tickers), 'calculateRisk': 'true'})
     performanceDataRequest = requests.get("https://www.blackrock.com/tools/hackathon/performance", params= {'identifiers':tickers, 'includePositionReturns':'true'})
     #portfolioJson = portfolioAnalysisRequest.json()
-    performanceJson = performanceDataRequest.json()
     performance = performanceJson['resultMap']['RETURNS']
     tickers = []
     q = Queue.PriorityQueue()
@@ -78,7 +77,6 @@ def main(tickers):
     for result in performance:
         info = result['latestPerf']
         ticker = result['ticker']
-        dump(result)
         if 'oneYearSharpeRatio' in info and 'oneYearRisk' in info:
             sharpescore = info['oneYearSharpeRatio']
             myList.append(sharpescore)
@@ -95,8 +93,6 @@ def main(tickers):
         if not q.empty():
             print q.get()
     getRecommendations(riskScore)
-
-    create_connection('/Users/Cathy/blackrock.db')
 
 if __name__ == "__main__":
     params = ['MU', 'NVDA', 'SQM','AAPL', 'GOOG', 'DATA']
