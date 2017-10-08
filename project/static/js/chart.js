@@ -153,6 +153,10 @@ chart2.on('draw', function(data) {
     }
 });
 
+var seq = 0,
+  delays = 80,
+  durations = 500;
+
 var chart3 = new Chartist.Line('#chart3', {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     series: [
