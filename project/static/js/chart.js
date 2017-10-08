@@ -120,14 +120,11 @@ chart1.on('created', function() {
     window.__exampleAnimateTimeout = setTimeout(chart1.update.bind(chart1), 12000);
 });
 
-var chart2 = new Chartist.Line('#chart2', {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    series: [
-        [1, 5, 2, 5, 4, 3],
-        [2, 3, 4, 8, 1, 2],
-        [5, 4, 3, 2, 1, 0.5]
-    ]
-}, {
+var request = new XMLHttpRequest();
+request.open("GET", '../static/js/chartdata2.json', false);
+request.send(null);
+var data2 = JSON.parse(request.responseText);
+var chart2 = new Chartist.Line('#chart2', data2, {
     low: 0,
     showArea: true,
     showPoint: false,
@@ -148,18 +145,12 @@ chart2.on('draw', function(data) {
     }
 });
 
-var seq = 0,
-  delays = 80,
-  durations = 500;
 
-var chart3 = new Chartist.Line('#chart3', {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    series: [
-        [1, 5, 2, 5, 4, 3],
-        [2, 3, 4, 8, 1, 2],
-        [5, 4, 3, 2, 1, 0.5]
-    ]
-}, {
+var request = new XMLHttpRequest();
+request.open("GET", '../static/js/chartdata3.json', false);
+request.send(null);
+var data3 = JSON.parse(request.responseText);
+var chart3 = new Chartist.Line('#chart3', data3, {
     low: 0,
     showArea: true,
     showPoint: false,
